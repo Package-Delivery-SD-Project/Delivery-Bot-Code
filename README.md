@@ -4,17 +4,17 @@
 
 ### Arduino Mega:
 - USB: Connect to Intel NUC
-- Arduino GND 🡪 Sabertooth GND
-- Arduino VIN 🡪 Sabertooth 5V
-- Arduino TX (Any TX pin that isn’t TX0) 🡪 Sabertooth S1
+- Arduino GND --> Sabertooth GND
+- Arduino VIN --> Sabertooth 5V
+- Arduino TX (Any TX pin that isn’t TX0) --> Sabertooth S1
 
 ### Sabertooth Power:
-- Battery + 🡪 Sabertooth B+
-- Battery - 🡪 Sabertooth B-
-- Motor1 + 🡪 Sabertooth M1A
-- Motor1 - 🡪 Sabertooth M1B
-- Motor2 + 🡪 Sabertooth M2A
-- Motor2 - 🡪 Sabertooth M2B
+- Battery + --> Sabertooth B+
+- Battery - --> Sabertooth B-
+- Motor1 + -->Sabertooth M1A
+- Motor1 - --> Sabertooth M1B
+- Motor2 + --> Sabertooth M2A
+- Motor2 - --> Sabertooth M2B
 
 ### NUC:
 - Powered by personal power supply
