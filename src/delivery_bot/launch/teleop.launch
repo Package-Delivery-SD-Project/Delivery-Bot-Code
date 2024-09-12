@@ -1,0 +1,18 @@
+<launch>
+
+    <!-- Launch joy_node to read Xbox controller -->
+    <node name="joy_node" pkg="joy" type="joy_node" output="screen">
+        <param name="dev" value="/dev/input/js0"/>  <!-- Adjust if Xbox controller is not js0 -->
+    </node>
+
+    <!-- Launch the rosserial node to communicate with Arduino -->
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen">
+        <param name="port" value="/dev/ttyACM0" /> <!-- Adjust port if needed -->
+        <param name="baud" value="57600" />
+    </node>
+
+    <!-- Launch Xbox controller teleop node -->
+    <node pkg="delivery_bot" type="teleop.py" name="xbox_teleop" output="screen" />
+
+</launch>
+
