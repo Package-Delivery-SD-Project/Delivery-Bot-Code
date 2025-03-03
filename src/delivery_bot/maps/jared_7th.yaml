@@ -1,0 +1,7 @@
+image: jared_7th.pgm
+resolution: 0.04
+origin: [-34.4743, -15.4303, 0.0]
+negate: 0
+occupied_thresh: 0.5
+free_thresh: 0.196
+

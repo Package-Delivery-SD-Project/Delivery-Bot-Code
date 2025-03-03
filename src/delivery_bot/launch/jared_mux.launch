@@ -1,0 +1,84 @@
+<launch>
+    <!-- Arguments -->
+    <arg name="teleop" default="false"/>
+    <arg name="mapping" default="false"/>
+    <arg name="model" default="$(find delivery_bot)/description/trail.urdf.xacro"/>
+    <arg name="map_file" default="$(find delivery_bot)/maps/alkesh/202404041345_eng_6th/202404041345_eng_6th.yaml"/>
+
+    <!-- ROSSerial Node for Arduino Communication -->
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen">
+        <param name="port" value="/dev/ttyACM0"/>
+        <param name="baud" value="57600"/>
+        <param name="queue_size" value="10"/>
+        <param name="publish_rate" value="50"/>
+    </node>
+
+    <!-- Rosbridge WebSocket Server -->
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <arg name="port" value="9090"/>
+        <arg name="address" value="10.108.43.165"/>
+    </include>
+
+    <!-- Web Video Streaming Server -->
+    <node name="web_video_server" pkg="web_video_server" type="web_video_server"/>
+
+    <!-- Camera Stream -->
+    <include file="$(find astra_camera)/launch/astra_pro.launch"/>
+    <node pkg="image_transport" type="republish" name="republish_compressed" output="screen" args="raw in:=/camera/color/image_raw compressed out:=/camera/color/image_compressed">
+        <param name="compressed/format" value="jpeg"/>
+        <param name="compressed/jpeg_quality" value="80"/>
+    </node>
+
+    <!-- Robot Model -->
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model)"/>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!-- RPLIDAR A1 -->
+    <node pkg="rplidar_ros" type="rplidarNode" name="rplidar_node" output="screen">
+        <param name="serial_port" value="/dev/ttyUSB0"/>
+        <param name="serial_baudrate" value="115200"/>
+        <param name="frame_id" value="laser_frame"/>
+        <param name="inverted" value="false"/>
+        <param name="angle_compensate" value="true"/>
+    </node>
+
+    <!-- Lidar Odometry -->
+    <node name="laser_odom" pkg="laser_odom" type="laser_odom" output="screen">
+        <param name="debug" value="false"/>
+        <param name="base_frame" value="base_link"/>
+        <param name="laser_base_frame" value="laser_frame"/>
+        <param name="laser_frame" value="laser_frame"/>
+        <param name="odom_frame" value="odom"/>
+        <param name="min_update_dist" value="0.05"/>
+        <param name="min_update_angle" value="5.0 * PI / 180"/>
+    </node>
+
+    <!-- Map Server -->
+    <group unless="$(arg mapping)"> 
+        <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+    </group>
+
+    <!-- RViz -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find delivery_bot)/rviz/navigation.rviz" output="screen"/>
+
+    <!-- Navigation and Teleop -->
+    <include file="$(find delivery_bot)/launch/include/amcl.launch"/>
+    <include file="$(find delivery_bot)/launch/include/move_base.launch"/>
+    <node pkg="delivery_bot" type="teleop.py" name="joystick_to_cmd_vel" output="screen"/>
+
+    <!-- cmd_vel Mux -->
+    <node pkg="topic_tools" type="mux" name="cmd_vel_mux" output="screen" args="/cmd_vel /cmd_vel_teleop /cmd_vel_move_base"/>
+
+    <!-- Mapping Mode -->
+    <group if="$(arg mapping)">
+        <node pkg="delivery_bot" type="teleop.py" name="joystick_to_cmd_vel" output="screen"/>
+        <node name="rtabmap" pkg="rtabmap_slam" type="rtabmap" output="screen">
+            <rosparam command="load" file="$(find delivery_bot)/params/rtabmap_params.yaml" />
+            <remap from="rgb/image" to="/camera/color/image_raw"/>
+            <remap from="depth/image" to="/camera/depth/image_raw"/>
+            <remap from="rgb/camera_info" to="/camera/color/camera_info"/>
+            <remap from="grid_map" to="/map"/>
+        </node>
+    </group>
+</launch>

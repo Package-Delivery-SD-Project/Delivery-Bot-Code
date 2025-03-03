@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jared/delivery_bot_ws/src/scarab/roboclaw/src/RoboClaw.h
+stdarg.h
+-
+stdexcept
+-
+stdint.h
+-
+termios.h
+-
+fcntl.h
+-
+poll.h
+-
+libusb.h
+-
+
+/home/jared/delivery_bot_ws/src/scarab/roboclaw/src/roboclaw_restart.cpp
+RoboClaw.h
+/home/jared/delivery_bot_ws/src/scarab/roboclaw/src/RoboClaw.h
+
+/usr/include/libusb-1.0/libusb.h
+stdint.h
+-
+sys/types.h
+-
+sys/time.h
+-
+time.h
+-
+limits.h
+-
+windows.h
+-
+winsock.h
+-
+

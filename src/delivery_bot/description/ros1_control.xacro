@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ROS Control Plugin for Gazebo -->
+  <gazebo>
+    <plugin name="ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/trail_robot</robotNamespace>
+      <controlPeriod>0.01</controlPeriod>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+  <!-- Joint State Controller -->
+  <xacro:property name="joint_names" value="['wheel_joint_left', 'wheel_joint_right', 'lidar_joint', 'camera_joint']"/>
+
+  <transmission name="left_wheel_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="left_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="wheel_joint_left">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <transmission name="right_wheel_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="right_wheel_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="wheel_joint_right">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <transmission name="lidar_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="lidar_actuator">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="lidar_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <transmission name="camera_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="camera_actuator">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="camera_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <!-- Controller Configuration -->
+  <rosparam>
+    controller_manager:
+      joint_state_controller:
+        type: joint_state_controller/JointStateController
+        publish_rate: 50
+
+      left_wheel_controller:
+        type: effort_controllers/JointVelocityController
+        joint: wheel_joint_left
+        pid: {p: 1.0, i: 0.1, d: 0.01}
+
+      right_wheel_controller:
+        type: effort_controllers/JointVelocityController
+        joint: wheel_joint_right
+        pid: {p: 1.0, i: 0.1, d: 0.01}
+
+      lidar_controller:
+        type: position_controllers/JointPositionController
+        joint: lidar_joint
+        pid: {p: 1.0, i: 0.0, d: 0.0}
+
+      camera_controller:
+        type: position_controllers/JointPositionController
+        joint: camera_joint
+        pid: {p: 1.0, i: 0.0, d: 0.0}
+  </rosparam>
+
+</robot>

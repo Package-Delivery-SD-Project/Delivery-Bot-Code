@@ -1,0 +1,8 @@
+prefix=/home/jared/delivery_bot_ws/devel
+
+Name: jared_robot_with_wheels
+Description: Description of jared_robot_with_wheels
+Version: 1.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

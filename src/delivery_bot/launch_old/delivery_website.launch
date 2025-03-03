@@ -1,0 +1,31 @@
+<launch>
+
+<!-- Rosbridge WebSocket Server for Web Communication -->
+    <include file="/opt/ros/noetic/share/rosbridge_server/launch/rosbridge_websocket.launch">
+        <arg name="port" value="9090"/>
+        <arg name="address" value="10.108.39.0"/>
+    </include>
+
+
+
+    <!-- Web Video Streaming Server -->
+    <node name="web_video_server" pkg="web_video_server" type="web_video_server" />
+    <!-- USB Camera Node with Compression for Streamed Video -->
+    <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen">
+        <param name="video_device" value="/dev/video0" />
+        <param name="image_width" value="640" />
+        <param name="image_height" value="480" />
+        <param name="pixel_format" value="yuyv" />
+        <param name="camera_frame_id" value="usb_cam" />
+           <param name="framerate" value="15" /> <!-- Set desired FPS here -->
+    </node>
+    <!-- Image Compressor Node for USB Camera -->
+    <node pkg="image_transport" type="republish" name="image_compressor" output="screen">
+        <param name="in" value="/usb_cam/image_raw"/>
+        <param name="out" value="/usb_cam/image_raw/compressed"/>
+        <param name="transport" value="compressed"/>
+    </node>
+
+
+
+</launch>

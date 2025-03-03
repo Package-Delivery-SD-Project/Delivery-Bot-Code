@@ -2,7 +2,7 @@ prefix=/home/jared/delivery_bot_ws/install
 
 Name: delivery_bot
 Description: Description of delivery_bot
-Version: 0.0.0
+Version: 0.1.0
 Cflags: 
 Libs: -L${prefix}/lib 
 Requires: 

@@ -1,0 +1,8 @@
+<launch>
+    <!-- Autonomous Mode -->
+    
+    <include file="$(find delivery_bot)/launch/include/amcl.launch"/>
+    <include file="$(find delivery_bot)/launch/include/move_base.launch"/>
+    
+
+</launch>

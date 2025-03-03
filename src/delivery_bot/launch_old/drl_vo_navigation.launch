@@ -1,0 +1,53 @@
+<launch>
+
+    <!--node name="map_to_odom_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 map odom 100" output="screen"/-->
+
+    <arg name="model" />
+    <param
+        name="robot_description"
+        textfile="$(find my_urdf)/urdf/my_urdf.urdf" />
+    <node
+        name="joint_state_publisher"
+        pkg="joint_state_publisher"
+        type="joint_state_publisher" />
+    <node
+        name="robot_state_publisher"
+        pkg="robot_state_publisher"
+        type="robot_state_publisher" />
+
+  <!-- Map Server -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find delivery_bot)/maps/alkesh/202404041210_lobby/202404041210_lobby.yaml"/>
+
+  
+  <!-- AMCL -->
+    <node name="amcl" pkg="amcl" type="amcl" output="screen">
+         <param name="odom_frame_id" value="odom" />
+         <param name="base_frame_id" value="base_footprint" />
+         <param name="map_frame_id" value="map" />
+         <param name="use_map_topic" value="false" />
+         <param name="update_min_d" value="0.2" />
+         <param name="update_min_a" value="0.2" />
+         <param name="min_particles" value="500" />
+         <param name="max_particles" value="2000" />
+         <param name="kld_err" value="0.05" />
+         <param name="kld_z" value="0.99" />
+         <param name="laser_min_range" value="0.1" />
+         <param name="laser_max_range" value="12.0" />
+         <param name="transform_tolerance" value="0.5" />
+    </node>
+   <!-- Move Base -->
+  <node name="move_base" pkg="move_base" type="move_base">
+    <rosparam file="$(find delivery_bot)/params/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find delivery_bot)/params/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find delivery_bot)/params/base_local_planner_params.yaml" command="load"/>
+    <rosparam file="$(find delivery_bot)/params/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
+    <rosparam file="$(find delivery_bot)/params/costmap_common_params.yaml" command="load" ns="local_costmap" /> 
+   
+    <rosparam param="recovery_behaviors">
+      - name: "conservative_reset"
+        type: "clear_costmap_recovery/ClearCostmapRecovery"
+      - name: "aggressive_reset"
+        type: "clear_costmap_recovery/ClearCostmapRecovery"
+    </rosparam>
+  </node>
+</launch>

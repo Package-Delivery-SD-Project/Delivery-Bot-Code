@@ -1,0 +1,23 @@
+to bring up robot:
+
+jared@turtlebot:~$ cd ~/delivery_bot_ws/
+build/ devel/ .git/  src/   
+jared@turtlebot:~$ cd ~/delivery_bot_ws/
+jared@turtlebot:~/delivery_bot_ws$ source devel/setup.sh 
+jared@turtlebot:~/delivery_bot_ws$ roscd delivery_bot/
+jared@turtlebot:~/delivery_bot_ws/src/delivery_bot$ ls
+CMakeLists.txt  include  launch_old  old_params   params  src
+description     launch   maps        package.xml  rviz
+jared@turtlebot:~/delivery_bot_ws/src/delivery_bot$ roslaunch delivery_bot jared_bringup.launch teleop:=false mapping:=false
+
+
+to bring up DRL-VO (Make sure map to odom is not being published in our code)
+
+jared@turtlebot:~$ cd ~ 
+jared@turtlebot:~$ singularity shell --nv drl_vo_container.sif 
+WARNING: Could not find any nv files on this host!
+Singularity> source /etc/.bashrc
+jared@turtlebot:~$ cd drltest_ws/
+jared@turtlebot:~/drltest_ws$ source devel/setup.sh 
+jared@turtlebot:~/drltest_ws$ roscd drl_vo_nav/           
+jared@turtlebot:~/drltest_ws/src/drl_vo_nav/drl_vo$ roslaunch drl_vo_nav drl_vo_nav.launch 

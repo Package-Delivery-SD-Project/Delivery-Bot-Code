@@ -1,0 +1,6 @@
+<launch>
+    <!-- Start the state machine node -->
+    <node pkg="state_machine" type="state_machine.py" name="state_machine" output="screen"/>
+
+</launch>
+

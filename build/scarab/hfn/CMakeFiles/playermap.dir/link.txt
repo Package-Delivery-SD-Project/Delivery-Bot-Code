@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -frounding-math  -O3 -DNDEBUG  -shared -Wl,-soname,libplayermap.so -o /home/jared/delivery_bot_ws/devel/lib/libplayermap.so CMakeFiles/playermap.dir/src/map.c.o CMakeFiles/playermap.dir/src/rosmap.cpp.o 

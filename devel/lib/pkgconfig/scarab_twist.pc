@@ -1,0 +1,8 @@
+prefix=/home/jared/delivery_bot_ws/devel
+
+Name: scarab_twist
+Description: Description of scarab_twist
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: roscpp

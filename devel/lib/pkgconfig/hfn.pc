@@ -1,0 +1,8 @@
+prefix=/home/jared/delivery_bot_ws/devel
+
+Name: hfn
+Description: Description of hfn
+Version: 0.0.0
+Cflags: -I/home/jared/delivery_bot_ws/devel/include -I/home/jared/delivery_bot_ws/src/scarab/hfn/include
+Libs: -L${prefix}/lib -lplayermap
+Requires: dynamic_reconfigure roscpp sensor_msgs geometry_msgs nav_msgs tf angles scarab_msgs

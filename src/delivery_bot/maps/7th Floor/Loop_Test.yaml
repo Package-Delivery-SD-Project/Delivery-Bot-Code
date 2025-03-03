@@ -1,0 +1,7 @@
+image: Loop_Test.pgm
+resolution: 0.04
+origin: [-15.5277, -15.0868, 0.0]
+negate: 0
+occupied_thresh: 0.5
+free_thresh: 0.196
+

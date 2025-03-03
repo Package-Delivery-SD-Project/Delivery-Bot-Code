@@ -1,0 +1,2 @@
+set(scarab_msgs_MESSAGE_FILES "/home/jared/delivery_bot_ws/devel/share/scarab_msgs/msg/MoveAction.msg;/home/jared/delivery_bot_ws/devel/share/scarab_msgs/msg/MoveActionGoal.msg;/home/jared/delivery_bot_ws/devel/share/scarab_msgs/msg/MoveActionResult.msg;/home/jared/delivery_bot_ws/devel/share/scarab_msgs/msg/MoveActionFeedback.msg;/home/jared/delivery_bot_ws/devel/share/scarab_msgs/msg/MoveGoal.msg;/home/jared/delivery_bot_ws/devel/share/scarab_msgs/msg/MoveResult.msg;/home/jared/delivery_bot_ws/devel/share/scarab_msgs/msg/MoveFeedback.msg")
+set(scarab_msgs_SERVICE_FILES "")

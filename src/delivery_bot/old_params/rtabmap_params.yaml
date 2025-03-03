@@ -1,0 +1,77 @@
+subscribe_depth: true
+subscribe_rgb: true
+subscribe_scan: true
+frame_id: "base_footprint"
+map_frame_id: "map"
+odom_frame_id: "odom"
+use_sim_time: false
+approx_sync: true
+queue_size: 10
+
+Grid:
+  CellSize: 0.04
+  MaxGroundAngle: 20
+  Sensor: 2
+  RangeMin: 0.7
+  RangeMax: 10.0
+  MaxObstacleHeight: 0.6
+  RayTracing: true
+
+Reg:
+  Force3DoF: true
+  Strategy: 1
+
+RGBD:
+  ProximityBySpace: true
+  ProximityByTime: true
+  ProximityAngle: 70
+  ProximityDistance: 1.0
+  ProximityPathMaxNeighbors: 50
+  LoopClosure: true
+  LoopClosureMaxDistance: 10.0
+  LoopClosureReextractFeatures: true
+  MaxLoopClosureDistance: 0.15
+  NewMapOdomChangeDistance: 2.0
+  OdomVarianceGuess: false
+  OdomCorrection: true
+  ProximityOdomGuess: false
+  OptimizeMaxError: 0.3
+  NeighborLinkRefining: true
+  OptimizeFromGraphEnd: false
+  StartAtOrigin: true
+  LinearUpdate: 0.05
+  AngularUpdate: 0.05
+  LinearSpeedUpdate: 0.03
+  AngularSpeedUpdate: 0.003
+  CreateOccupancyGrid: true
+  MarkerDetection: true
+
+Rtabmap:
+  StartNewMapOnGoodSignature: false
+  DetectionRate: 10
+  OdomGuessRatio: 0.2
+
+Vis:
+  Odom: false
+
+Icp:
+  VoxelSize: 0.1
+  PointToPlaneK: 20
+  PointToPlaneRadius: 0
+  PointToPlane: true
+  Iterations: 10
+  Epsilon: 0.001
+  MaxTranslation: 3
+  MaxCorrespondenceDistance: 1
+  Strategy: 1
+  OutlierRatio: 0.7
+  CorrespondenceRatio: 0.2
+
+Optimizer:
+  Strategy: 2
+
+Odom:
+  Strategy: 1
+  FilteringStrategy: 1
+  KalmanProcessNoise: 0.01
+  KalmanMeasurementNoise: 0.1

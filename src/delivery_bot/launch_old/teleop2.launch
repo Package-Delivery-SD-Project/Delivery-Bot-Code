@@ -1,0 +1,126 @@
+<launch>
+    <!-- Rosserial Node for Arduino Communication with Optimized Parameters -->
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen">
+        <param name="port" value="/dev/ttyACM0" />
+        <param name="baud" value="57600" />
+        <param name="queue_size" value="10"/>
+        <param name="publish_rate" value="50"/>
+    </node>
+
+    <!-- Xbox Controller Teleoperation Node -->
+    <node pkg="delivery_bot" type="teleop.py" name="joystick_to_cmd_vel" output="screen"/>
+
+    <!-- /map subscriber for RTAB-map >
+    <node pkg="delivery_bot" type="map_sub.py" name="map_subscriber" output="screen" /-->
+    
+    <!-- Rosbridge WebSocket Server for Web Communication -->
+    <include file="/opt/ros/noetic/share/rosbridge_server/launch/rosbridge_websocket.launch">
+        <arg name="port" value="9090"/>
+        <arg name="address" value="10.108.35.232.0"/>
+    </include>
+    
+    <!-- Web Video Streaming Server -->
+    <node name="web_video_server" pkg="web_video_server" type="web_video_server" />
+
+    <!-- Include the Astra camera launch file -->
+    <include file="$(find astra_camera)/launch/astra_pro.launch" />
+    <node pkg="image_transport" type="republish" name="republish_compressed" output="screen" args="raw in:=/camera/color/image_raw compressed out:=/camera/color/image_compressed">
+            <param name="compressed/format" value="jpeg"/>
+            <param name="compressed/jpeg_quality" value="80"/>
+    </node>
+
+    <!-- <node
+        name="odom_to_dummy_tf"
+        pkg="tf"
+        type="static_transform_publisher"
+        args="0 0 0 0 0 0 odom dummy_root 100"
+        output="screen" />
+    
+
+    <node name="map_to_odom_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 map odom 100" output="screen"/> -->
+
+    <arg name="model" />
+    <param
+        name="robot_description"
+        textfile="$(find my_urdf)/urdf/my_urdf.urdf" />
+    <node
+        name="joint_state_publisher"
+        pkg="joint_state_publisher"
+        type="joint_state_publisher" />
+    <node
+        name="robot_state_publisher"
+        pkg="robot_state_publisher"
+        type="robot_state_publisher" />
+	
+    <!-- RPLIDAR A1 Node -->
+    <node pkg="rplidar_ros" type="rplidarNode" name="rplidar_node" output="screen">
+        <param name="serial_port" value="/dev/ttyUSB0" />
+        <param name="serial_baudrate" value="115200" />
+        <param name="frame_id" value="lidar_link" />
+        <param name="inverted" value="false" />
+        <param name="angle_compensate" value="true" />
+    </node>
+
+    <!-- RF2O Laser Odometry Node -->
+    <node pkg="rf2o_laser_odometry" type="rf2o_laser_odometry_node" name="rf2o_laser_odometry" output="screen">
+        <param name="laser_scan_topic" value="/scan"/>    
+        <param name="odom_topic" value="/odom_rf2o" />            
+        <param name="publish_tf" value="false" />                   
+        <param name="base_frame_id" value="base_footprint"/>          
+        <param name="odom_frame_id" value="odom" />                 
+        <param name="init_pose_from_topic" value="" /> 
+        <param name="freq" value="6.0"/>                            
+        <param name="verbose" value="true" />                      
+    </node>
+
+    <!-- ICP Odometry Node -->
+    <node pkg="rtabmap_odom" type="icp_odometry" name="icp_odometry" output="screen">
+        <!-- Parameters -->
+        <param name="frame_id" value="base_footprint" />
+        <param name="odom_frame_id" value="odom" />
+        <param name="publish_tf" value="true" />
+        <param name="approx_sync" value="true" />
+        <param name="Reg/Strategy" value="1" />
+        <param name="Odom/Strategy" value="1" />
+        <param name="Odom/FilteringStrategy" value="1" />
+        <param name="Odom/KalmanProcessNoise" value="0.001" />
+        <param name="Odom/KalmanMeasurementNoise" value="0.01" />
+        <param name="Icp/PointToPlane" value="true" />
+        <param name="Icp/Iterations" value="10" />
+        <param name="Icp/VoxelSize" value="0.1" />
+        <param name="Icp/Epsilon" value="0.001" />
+        <param name="Icp/PointToPlaneK" value="20" />
+        <param name="Icp/PointToPlaneRadius" value="0" />
+        <param name="Icp/MaxTranslation" value="2" />
+        <param name="Icp/MaxCorrespondenceDistance" value="1" />
+        <param name="Icp/Strategy" value="1" />
+        <param name="Icp/OutlierRatio" value="0.7" />
+        <param name="Icp/CorrespondenceRatio" value="0.01" />
+        <param name="Odom/ScanKeyFrameThr" value="0.4" />
+        <param name="OdomF2M/ScanSubtractRadius" value="0.1" />
+        <param name="OdomF2M/ScanMaxSize" value="15000" />
+        <param name="OdomF2M/BundleAdjustment" value="false" />
+
+        <!-- Remappings -->
+        <remap from="scan" to="/scan" />
+        <remap from="odom" to="/icp_odom" />
+
+        <!-- Logging Level -->
+        <param name="~log_level" value="error" />
+    </node>
+
+    <!-- EKF  -->
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" output="screen">
+        <rosparam command="load" file="$(find delivery_bot)/params/ekf_params.yaml" />
+    </node>
+
+    <node name="rtabmap" pkg="rtabmap_slam" type="rtabmap" output="screen" args="" launch-prefix="">
+        <rosparam command="load" file="$(find delivery_bot)/params/rtabmap_params.yaml" />
+        <remap from="rgb/image" to="/camera/color/image_raw"/>
+        <remap from="depth/image" to="/camera/depth/image_raw"/>
+        <remap from="rgb/camera_info" to="/camera/color/camera_info"/>
+        <remap from="grid_map" to="/map"/>
+    </node> 
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find delivery_bot)/rviz/rtabmap.rviz" output="screen"/>
+</launch>

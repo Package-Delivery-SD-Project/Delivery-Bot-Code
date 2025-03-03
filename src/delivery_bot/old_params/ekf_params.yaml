@@ -1,0 +1,98 @@
+frequency: 30
+
+# Sensor fusion sources
+odom0: odom_rf2o
+odom0_config: [true, true, true,  # x, y, z
+                   false, false, true,  # roll, pitch, yaw
+                   true, true, true,  # vx, vy, vz
+                   false, false, true,  # vroll, vpitch, vyaw
+                   false, false, false] # ax, ay, az
+odom0_queue_size: 2
+odom0_nodelay: true
+odom0_differential: false
+odom0_relative: false
+odom0_pose_rejection_threshold: 2
+odom0_twist_rejection_threshold: 2
+
+odom1: icp_odom
+odom1_config: [true, true, true,  # x, y, z
+                   false, false, true,  # roll, pitch, yaw
+                   true, true, true,  # vx, vy, vz
+                   false, false, true,  # vroll, vpitch, vyaw
+                   false, false, false] # ax, ay, az
+odom1_queue_size: 2
+odom1_nodelay: true
+odom1_differential: false
+odom1_relative: false
+odom1_pose_rejection_threshold: 2
+odom1_twist_rejection_threshold: 2
+
+pose0: localization_pose
+pose0_config: [true, true, false,   # x, y, z
+               false, false, true, # roll, pitch, yaw
+               false, false, false, # vx, vy, vz
+               false, false, false, # vroll, vpitch, vyaw
+               false, false, false] # ax, ay, az
+pose0_differential: false
+pose0_relative: false
+pose0_queue_size: 5
+pose0_rejection_threshold: 5
+odom0_twist_rejection_threshold: 1
+pose0_nodelay: false
+
+twist0: cmd_vel
+twist0_config: [true, false, false,  # vx, vy, vz
+                false, false, true,  # vroll, vpitch, vyaw
+                false, false, false] # ax, ay, az
+twist0_queue_size: 5
+twist0_nodelay: true
+twist0_rejection_threshold: 1.0
+              
+use_control: false
+publish_tf: true
+map_frame: map
+odom_frame: odom
+base_link_frame: base_footprint
+world_frame: odom
+two_d_mode: true
+sensor_timeout: 0.1
+transform_time_offset: 0.0
+transform_timeout: 0.1
+print_diagnostics: true
+debug: false
+use_control: true
+stamped_control: false
+control_timeout: 0.2
+control_config: [true, false, false, false, false, true]
+
+initial_estimate_covariance: [1e-9, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    1e-9, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    1e-9, 0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    1e-9, 0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    1e-9, 0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    1e-9, 0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    1e-9, 0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    1e-9, 0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    1e-9,  0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     1e-9,  0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     1e-9,  0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1e-9, 0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]
+
+process_noise_covariance: [0.05, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0.05, 0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0.06, 0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0.03, 0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0.03, 0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0.06, 0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0.025, 0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0.025, 0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0.04, 0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0.01, 0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0.01, 0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0.02, 0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0.01, 0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0.01, 0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0.015]

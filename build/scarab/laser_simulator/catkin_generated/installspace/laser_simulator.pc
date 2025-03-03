@@ -1,0 +1,8 @@
+prefix=/home/jared/delivery_bot_ws/install
+
+Name: laser_simulator
+Description: Description of laser_simulator
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -llaser_simlib
+Requires: roscpp nav_msgs sensor_msgs geometry_msgs rosbag tf message_runtime

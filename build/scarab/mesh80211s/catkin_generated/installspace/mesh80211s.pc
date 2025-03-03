@@ -1,0 +1,8 @@
+prefix=/home/jared/delivery_bot_ws/install
+
+Name: mesh80211s
+Description: Description of mesh80211s
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime

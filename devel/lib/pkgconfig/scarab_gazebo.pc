@@ -1,0 +1,8 @@
+prefix=/home/jared/delivery_bot_ws/devel
+
+Name: scarab_gazebo
+Description: Description of scarab_gazebo
+Version: 0.1.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

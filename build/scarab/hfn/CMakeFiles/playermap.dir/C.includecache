@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jared/delivery_bot_ws/src/scarab/hfn/include/player_map/map.h
+stdint.h
+-
+
+/home/jared/delivery_bot_ws/src/scarab/hfn/src/map.c
+assert.h
+-
+math.h
+-
+stdlib.h
+-
+string.h
+-
+stdio.h
+-
+player_map/map.h
+/home/jared/delivery_bot_ws/src/scarab/hfn/src/player_map/map.h
+

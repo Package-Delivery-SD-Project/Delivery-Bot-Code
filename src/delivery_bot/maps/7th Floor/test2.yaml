@@ -1,0 +1,7 @@
+image: test2.pgm
+resolution: 0.04
+origin: [-17.3603, -15.3158, 0.0]
+negate: 0
+occupied_thresh: 0.5
+free_thresh: 0.196
+

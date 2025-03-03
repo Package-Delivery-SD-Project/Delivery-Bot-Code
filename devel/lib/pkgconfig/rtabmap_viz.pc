@@ -1,0 +1,8 @@
+prefix=/home/jared/delivery_bot_ws/devel
+
+Name: rtabmap_viz
+Description: Description of rtabmap_viz
+Version: 0.21.5
+Cflags: -I/home/jared/delivery_bot_ws/src/rtabmap_ros/rtabmap_viz/include
+Libs: -L${prefix}/lib 
+Requires: cv_bridge geometry_msgs std_msgs std_srvs nav_msgs rtabmap_msgs rtabmap_sync tf

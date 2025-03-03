@@ -1,0 +1,18 @@
+<launch>
+    <!-- Enable simulation time for all nodes -->
+    <param name="use_sim_time" value="true" />
+
+    <!-- Start Gazebo with an empty world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find gazebo_ros)/worlds/empty.world"/>
+    </include>
+
+    <!-- Spawn the robot model -->
+    <node name="spawn_jared_robot" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-file $(find jared_robot_with_wheels)/urdf/jared_robot_with_wheels/urdf/jared_robot_with_wheels_replaced.urdf -urdf -model jared_robot_with_wheels" />
+
+    <!-- Load Joint State Controller -->
+    <node name="joint_state_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+          args="joint_state_controller" />
+
+</launch>
